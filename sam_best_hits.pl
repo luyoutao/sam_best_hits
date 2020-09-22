@@ -8,7 +8,7 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use Log::Log4perl::Layout::PatternLayout;
 
-our $VERSION = 0.7;
+our $VERSION = 0.71;
 our $LOGGER  = get_logger(__PACKAGE__);
 my ( $inFiles, $labels ) = ( "", "" );
 my @inFiles;
@@ -641,7 +641,7 @@ CODE
             $samReader->init_fh();
             $samReader->next();    # get the first readPair
             $LOGGER->trace(
-"\$samReader->{readPair}->{readID} = $samReader->{readPair}->{readID}\n"
+"\$samReader->{readPair}->{readID} = " . (defined($samReader->{readPair}) ? $samReader->{readPair}->{readID} : "") . "\n"
             );
         }
         my $outFh  = $self->{outFh};
