@@ -35,7 +35,7 @@
         *) source label(s) of the best hit(s);
 
 # Example:
-    perl sam_best_hits.pl --inFiles human.sam,mouse.sam,bacteria.sam --labels human,mouse,bacteria 2>err
+    perl sam_best_hits.pl --inFiles test/human.sam,test/mouse.sam,test/bacteria.sam --labels human,mouse,bacteria 2>err
     ReadID  human   mouse   bacteria        BestScore       BestLabel
     NB501328:197:HMK3KBGX7:1:11101:1498:13562       49      41              49      human
     NB501328:197:HMK3KBGX7:1:11101:1744:6598        39      47              47      mouse
