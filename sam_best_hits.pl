@@ -1,14 +1,16 @@
-#' Author: Youtao Lu<luyoutao@sas.upenn.edu>
-#' Copyright (c) 2020 Kim Laboratory, University of Pennsylvania
-#' All Rights Reserved
-
+#' This Source Code Form is subject to the terms of the Mozilla Public
+#' License, v. 2.0. If a copy of the MPL was not distributed with this
+#' file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#'
+#' Youtao Lu@Kim Lab, 2016-2020
+#' Kim Laboratory Bioinformatics Infrastructure
 use strict;
 use warnings;
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use Log::Log4perl::Layout::PatternLayout;
 
-our $VERSION = 0.71;
+our $VERSION = 0.72;
 our $LOGGER  = get_logger(__PACKAGE__);
 my ( $inFiles, $labels ) = ( "", "" );
 my @inFiles;
@@ -64,7 +66,7 @@ Output:
         *) source label(s) of the best score(s);
 
 Example:
-    perl sam_best_hits.pl --inFiles human.sam,mouse.sam,bacteria.sam --labels human,mouse,bacteria 2>err
+    perl Source/functions/sam_best_hits.pl --inFiles Source/functions/sam_best_hits/small/human.sam,Source/functions/sam_best_hits/small/mouse.sam,Source/functions/sam_best_hits/small/bacteria.sam --labels human,mouse,bacteria 2>err
     ReadID  human   mouse   bacteria        BestScore       BestLabel
     NB501328:197:HMK3KBGX7:1:11101:1498:13562       49      41              49      human
     NB501328:197:HMK3KBGX7:1:11101:1744:6598        39      47              47      mouse
@@ -554,7 +556,8 @@ $LOGGER->info(
     package SamReaders;
     use IO::Zlib;
     use List::Util qw( reduce max );
-    use Inline 'C' => <<CODE;
+    use Inline Config => DIRECTORY => $ENV{HOME};
+    use Inline C => <<CODE;
 /* from samtools/1.9/bam_sort.c */
 int strnum_cmp(const char *_a, const char *_b)
 {
@@ -641,7 +644,13 @@ CODE
             $samReader->init_fh();
             $samReader->next();    # get the first readPair
             $LOGGER->trace(
-"\$samReader->{readPair}->{readID} = " . (defined($samReader->{readPair}) ? $samReader->{readPair}->{readID} : "") . "\n"
+                "\$samReader->{readPair}->{readID} = "
+                  . (
+                    defined( $samReader->{readPair} )
+                    ? $samReader->{readPair}->{readID}
+                    : ""
+                  )
+                  . "\n"
             );
         }
         my $outFh  = $self->{outFh};
@@ -729,4 +738,4 @@ my $samReaders = SamReaders->new(
 $samReaders->init();
 $samReaders->iter();
 $samReaders->fin();
-$LOGGER->info("All done!\n");
+$LOGGER->info("All done.\n");
