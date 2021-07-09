@@ -1,13 +1,16 @@
-# Summary:
-    Compare primary alignment scores from several SAM/BAM files. For each read (read pair if paired-end [PE]), output score from the respective input (blank if absent) as well as which one has the best score (multiple if ties). Three ways of calculating the score: 
+## Summary:
+Compare primary alignment scores from several SAM/BAM files. For each read (read pair if paired-end [PE]), output score from the respective input (blank if absent) as well as which one has the best score (multiple if ties). 
+
+Three ways of calculating the score: 
+
     *) AS: original score reported in the tag 'AS';
     *) heuristic_raw: raw mapped length - penalty * #. of mismatches;
     *) heuristic_nonoverlap: nonoverlapping mapped length - penalty * #. of mismatches.
 
-# Usage:
+## Usage:
     perl $0 --inFiles <input1.bam,input2.bam,...> --labels <species1,species2,...> [--outfile output.txt]  [--endType PE] [--nameSorted] [--ncores 1] [--scheme AS] [--AS-per-mate] [--NM-per-mate] [--penalty 2] [--debug info] [--version]
 
-# Options:
+## Options:
     --inFiles, -i   input files, comma separated, can be SAM or BAM format;
     --labels        labels of input files, comma separated;
     --outFile, -o   output file; if omitted, write to STDOUT; otherwise, if ending with '.gz', will be GZ compressed;
@@ -25,17 +28,18 @@
     --debug         level of logging, choose from fatal, error, warn, info, debug, trace (default: info);
     --version, -v   output version number.
 
-# Output:
-    The output has n+3 columns where n is the number of input files/labels:
-        *) read ID;
-        *) score from 1st input;
-        ...
-        *) score from n-th input;
-        *) best score;
-        *) source label(s) of the best hit(s);
+## Output:
+The output has n+3 columns where n is the number of input files/labels:
 
-# Example:
-    perl sam_best_hits.pl --inFiles test/human.sam,test/mouse.sam,test/bacteria.sam --labels human,mouse,bacteria 2>err
+    *) read ID;
+    *) score from 1st input;
+       ...
+    *) score from n-th input;
+    *) best score;
+    *) source label(s) of the best hit(s);
+
+## Examples:
+    $ perl sam_best_hits.pl --inFiles test/human.sam,test/mouse.sam,test/bacteria.sam --labels human,mouse,bacteria 2>err
     ReadID  human   mouse   bacteria        BestScore       BestLabel
     NB501328:197:HMK3KBGX7:1:11101:1498:13562       49      41              49      human
     NB501328:197:HMK3KBGX7:1:11101:1744:6598        39      47              47      mouse
